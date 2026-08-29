@@ -1,0 +1,13 @@
+time
+speech_recognition as SR
+webbrowser
+random import choices
+pyttsx3
+sysollama
+customtkinter as ctk
+PIL
+pathlib import Path
+pymupdf
+psutil
+pydantic import BaseModel
+asyncio
