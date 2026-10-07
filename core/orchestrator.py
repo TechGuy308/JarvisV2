@@ -31,7 +31,7 @@ class Orchestrator():
         self.conversation.add_ai(reply)
 
         print(f"hist: {history}")
-        self.voice.run(reply)
+        self.voice.speak(reply)
         
         
     

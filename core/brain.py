@@ -23,7 +23,10 @@ os.environ["LANGCHAIN_PROJECT"] = "My First Trace"
 @tool
 def open_app(app):
     """Open desktop applications"""
-    tool_launch_app(app)
+    try:
+        tool_launch_app(app)
+    except Exception as e:
+        return f"Failed to open app. App:{app} Error:{e}"
 
 @tool
 def search_files(keyword:str):
@@ -35,12 +38,19 @@ def search_files(keyword:str):
         if str(keyword).lower() in file.name.lower() and file.is_file():
             file_list.append(file)
     print(str(file_list))    
+
+    if not file_list:
+        return "No files found"
     return file_list
     
 @tool
 def open_files(filepath:str):
     """Open the correct file"""
-    os.startfile(filepath)
+    
+    try:
+        os.startfile(filepath)
+    except Exception as e:
+        return f"Failed to open file. File:{filepath} Error:{e}"
 
 tools = [open_app, open_files, search_files]
 

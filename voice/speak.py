@@ -1,34 +1,47 @@
 #Manage speaking
 
-import pyttsx3
 import asyncio
 import edge_tts
-from playsound import playsound
 import os
 import pygame
-import random
+from elevenlabs.client import ElevenLabs
+from elevenlabs import VoiceSettings
+from elevenlabs.play import play
+from dotenv import load_dotenv, find_dotenv
+import os
 
-#Future Changes: Stream audio
+load_dotenv(dotenv_path="data/.env")
+api_key = os.getenv("ELEVEN_LABS_API_KEY")
+client = ElevenLabs(api_key=api_key)
 
 pygame.mixer.init()
 class Voice():
     def __init__(self):
         pass
-        #self.wait_message = ["One moment sir.", "Please wait as I process your request", "Currently Processing", "Just a moment", "Give me a second sir.", "Right away sir.", "I will be done shortly."]
-    #def wait(self):
-        #asyncio.run(self.speak(random.choice(self.wait_message)))
     
     def run(self, reply):
         
         asyncio.run(self.speak(reply))
         
 
-    async def speak(self, text):
+    def speak(self, text):
+        print("speaking")
         # en-GB-ThomasNeural or en-GB-RyanNeural
-        tts = edge_tts.Communicate(text=text, voice="en-GB-ThomasNeural", rate="+3%", pitch="-7Hz")
+        #tts = edge_tts.Communicate(text=text, voice="en-GB-ThomasNeural", rate="+3%", pitch="-7Hz")
         
-        await tts.save("speech.mp3")
-        sound = pygame.mixer.Sound("speech.mp3")
-        sound.play()
-        os.remove("speech.mp3") 
+        #await tts.save("speech.mp3")
+        #sound = pygame.mixer.Sound("speech.mp3")
+        #sound.play()
+        #os.remove("speech.mp3") 
+        voice_id= "C8fuiDiroiSGQjaE8hpt"
+        audio = client.text_to_speech.convert(
+            text=text,
+            voice_id=voice_id,
+            model_id="eleven_flash_v2",
+            output_format="mp3_44100_128",
+            voice_settings=VoiceSettings(stability=0.7, style_exaggeration=0.0, speed=0.73)
+        )
+
+        
+        play(audio)
 
